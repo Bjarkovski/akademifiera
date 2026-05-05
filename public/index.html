@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akademifiera — Konsten att förolämpa med värdighet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1410;
+      --ink-muted: #5a4f45;
+      --ink-faint: #a89f95;
+      --parchment: #f7f2ea;
+      --parchment-dark: #ede6d8;
+      --gold: #9a7b4f;
+      --gold-light: #c9a96e;
+      --red-seal: #8b2020;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem 4rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 28px,
+          rgba(154,123,79,0.06) 28px,
+          rgba(154,123,79,0.06) 29px
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 680px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .monogram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 auto 0;
+      width: fit-content;
+    }
+    .divider-line {
+      width: 60px;
+      height: 1px;
+      background: var(--gold-light);
+    }
+    .divider-ornament {
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border: 1px solid var(--parchment-dark);
+      border-radius: 2px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 24px rgba(90,70,40,0.08), 0 0 0 1px rgba(154,123,79,0.08);
+      position: relative;
+    }
+
+    .card::before, .card::after {
+      content: '✦';
+      position: absolute;
+      color: var(--gold-light);
+      font-size: 10px;
+    }
+    .card::before { top: 10px; left: 10px; }
+    .card::after { bottom: 10px; right: 10px; }
+
+    label {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--parchment);
+      border: 1px solid var(--parchment-dark);
+      border-radius: 2px;
+      resize: vertical;
+      min-height: 110px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--gold); }
+    textarea::placeholder { color: var(--ink-faint); font-style: italic; }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      font-style: italic;
+    }
+
+    button {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--parchment);
+      background: var(--ink);
+      border: none;
+      padding: 11px 28px;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button:hover { background: var(--gold); }
+    button:active { transform: scale(0.98); }
+    button:disabled { background: var(--ink-faint); cursor: not-allowed; }
+
+    /* Result */
+    .result-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    .result-section.visible { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card {
+      background: #fff;
+      border: 1px solid var(--parchment-dark);
+      border-top: 3px solid var(--gold);
+      padding: 2rem 2.5rem;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 24px rgba(90,70,40,0.08);
+    }
+
+    .result-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.75rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .result-text {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.25rem;
+      line-height: 1.75;
+      color: var(--ink);
+      font-style: italic;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 1rem;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink-muted);
+      border: 1px solid var(--parchment-dark);
+      font-size: 0.78rem;
+      padding: 8px 18px;
+    }
+    .btn-secondary:hover { background: var(--parchment); color: var(--ink); }
+
+    /* Loader */
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 1.5rem;
+      font-style: italic;
+      color: var(--ink-muted);
+      font-size: 1rem;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .loader.visible { display: block; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Error */
+    .error {
+      display: none;
+      color: var(--red-seal);
+      font-size: 0.95rem;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    .error.visible { display: block; }
+
+    /* Footer */
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--ink-faint);
+      font-style: italic;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .card, .result-card { padding: 1.5rem; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="monogram">Æ</div>
+      <h1>Akademifiera</h1>
+      <p class="tagline">Konsten att förolämpa med värdighet</p>
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-ornament">✦</span>
+        <div class="divider-line"></div>
+      </div>
+    </header>
+
+    <div class="card">
+      <label for="input">Din förolämpning</label>
+      <textarea id="input" placeholder="Skriv din råa, oblygsamma formulering här..." rows="4"></textarea>
+
+      <div class="btn-row">
+        <span class="hint">Ctrl+Enter för att skicka</span>
+        <button id="btn" onclick="akademifiera()">Akademifiera</button>
+      </div>
+      <div class="error" id="error"></div>
+    </div>
+
+    <div class="loader" id="loader">
+      Konsulterar akademisk expertis…
+    </div>
+
+    <div class="result-section" id="result-section">
+      <div class="result-card">
+        <div class="result-label">Akademisk version</div>
+        <div class="result-text" id="result-text"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn-secondary" onclick="kopiera()">Kopiera text</button>
+        <button class="btn-secondary" onclick="rensa()">Ny förolämpning</button>
+      </div>
+    </div>
+
+    <footer>
+      <p>En tjänst av <a href="https://www.bjarki.se" target="_blank">bjarki.se</a></p>
+      <p style="margin-top: 6px;">Powered by Claude · Ingen förolämpning sparas</p>
+    </footer>
+  </div>
+
+  <script>
+    const inputEl = document.getElementById('input');
+    const btnEl = document.getElementById('btn');
+    const loaderEl = document.getElementById('loader');
+    const resultSection = document.getElementById('result-section');
+    const resultText = document.getElementById('result-text');
+    const errorEl = document.getElementById('error');
+
+    async function akademifiera() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+
+      btnEl.disabled = true;
+      loaderEl.classList.add('visible');
+      resultSection.classList.remove('visible');
+      errorEl.classList.remove('visible');
+
+      try {
+        const res = await fetch('/akademifiera', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Okänt fel');
+
+        resultText.textContent = data.result;
+        resultSection.classList.add('visible');
+      } catch (err) {
+        errorEl.textContent = err.message || 'Något gick fel. Försök igen.';
+        errorEl.classList.add('visible');
+      } finally {
+        loaderEl.classList.remove('visible');
+        btnEl.disabled = false;
+      }
+    }
+
+    function kopiera() {
+      navigator.clipboard.writeText(resultText.textContent).then(() => {
+        const btn = event.target;
+        btn.textContent = 'Kopierat!';
+        setTimeout(() => btn.textContent = 'Kopiera text', 2000);
+      });
+    }
+
+    function rensa() {
+      inputEl.value = '';
+      resultSection.classList.remove('visible');
+      errorEl.classList.remove('visible');
+      inputEl.focus();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) akademifiera();
+    });
+  </script>
+</body>
+</html>
