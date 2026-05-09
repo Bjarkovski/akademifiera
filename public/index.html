@@ -151,7 +151,7 @@ async function submit() {
   errorMsg.classList.remove('visible');
   resultSection.classList.remove('visible');
   try {
-    const res = await fetch('/akademifiera/api/akademifiera', {
+    const res = await fetch('/akademifiera', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text, dialect: select.value })
