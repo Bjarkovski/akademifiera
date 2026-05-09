@@ -1,197 +1,189 @@
 <!DOCTYPE html>
 <html lang="sv">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-    <title>Akademifiera — Konsten att förolämpa med värdighet</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&family=Patrick+Hand&family=Special+Elite&family=Lobster&family=Press+Start+2P&family=Permanent+Marker&display=swap" rel="stylesheet"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--ink:#1a1410;--ink-muted:#5a4f45;--parchment:#f7f2e8;--parchment-mid:#ede6d2;--parchment-dark:#d9cfbb;--gold:#8b6914;--gold-light:#c9a43e;--red-seal-light:#c0392b;--shadow:rgba(90,70,40,.18)}
-    body{font-family:'EB Garamond',Georgia,serif;background-color:var(--parchment);background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(139,105,20,.06) 31px,rgba(139,105,20,.06) 32px);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:3rem 1rem 4rem}
-    header{text-align:center;margin-bottom:2.5rem}
-    .logo-badge{width:64px;height:64px;border:2px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;color:var(--gold);font-family:'Playfair Display',serif;font-size:1.6rem;font-style:italic}
-    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,3rem);font-weight:700;color:var(--ink)}
-    .tagline{font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--ink-muted);margin-top:.4rem}
-    .divider{display:flex;align-items:center;gap:.7rem;margin:1.2rem auto 0;width:200px;color:var(--gold)}
-    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gold-light)}
-    .card{background:#fff;border:1px solid var(--parchment-dark);box-shadow:0 4px 24px var(--shadow),0 1px 4px var(--shadow);border-radius:2px;padding:2rem;width:100%;max-width:680px;position:relative}
-    .card::before{content:'\2736';position:absolute;color:var(--gold);font-size:.75rem;top:.7rem;left:.9rem}
-    .card::after{content:'\2736';position:absolute;color:var(--gold);font-size:.75rem;bottom:.7rem;right:.9rem}
-    .dialect-section{margin-bottom:1.5rem}
-    .dialect-section label{display:block;font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.6rem}
-    .select-wrap{position:relative}
-    .select-wrap::after{content:'\25be';position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gold);pointer-events:none}
-    select{width:100%;padding:.75rem 2.5rem .75rem 1rem;border:1px solid var(--parchment-dark);border-radius:2px;background:var(--parchment);color:var(--ink);font-size:1rem;font-family:'EB Garamond',serif;cursor:pointer;appearance:none;-webkit-appearance:none}
-    select:focus{outline:none;border-color:var(--gold-light);box-shadow:0 0 0 3px rgba(139,105,20,.1)}
-    .dialect-info{margin-top:.5rem;font-size:.82rem;color:var(--ink-muted);font-style:italic;min-height:1.2em}
-    fieldset{border:none;margin-bottom:1.2rem}
-    legend{font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.6rem;padding:0}
-    textarea{width:100%;min-height:130px;padding:.9rem 1rem;border:1px solid var(--parchment-dark);border-radius:2px;resize:vertical;font-size:1.05rem;font-family:'EB Garamond',serif;color:var(--ink);background:var(--parchment);line-height:1.6}
-    textarea:focus{outline:none;border-color:var(--gold-light);box-shadow:0 0 0 3px rgba(139,105,20,.1)}
-    .form-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;margin-top:1rem}
-    .hint{font-size:.78rem;color:#b0a898;font-style:italic}
-    .btn-primary{background:var(--ink);color:var(--parchment);border:none;padding:.75rem 2rem;font-family:'Lato',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px}
-    .btn-primary:hover{background:var(--ink-muted)}
-    .btn-primary:disabled{background:var(--parchment-dark);color:var(--ink-muted);cursor:not-allowed}
-    .loader{display:none;align-items:center;gap:.5rem;font-size:.85rem;color:var(--ink-muted);font-style:italic;margin-top:1rem}
-    .loader.visible{display:flex}
-    .loader-dots span{display:inline-block;width:5px;height:5px;background:var(--gold-light);border-radius:50%;margin:0 2px;animation:pulse 1.2s ease-in-out infinite}
-    .loader-dots span:nth-child(2){animation-delay:.2s}
-    .loader-dots span:nth-child(3){animation-delay:.4s}
-    @keyframes pulse{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
-    .result-section{display:none;border-top:1px solid var(--parchment-mid);padding-top:1.4rem;margin-top:1.4rem}
-    .result-section.visible{display:block}
-    .result-label{font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.7rem}
-    .result-box{background:var(--parchment);border:1px solid var(--parchment-dark);border-left:3px solid var(--gold-light);padding:1.1rem 1.2rem;border-radius:2px;font-size:1.1rem;line-height:1.75;color:var(--ink);margin-bottom:1rem}
-    .result-box.font-akademiska{font-family:'Playfair Display',serif;font-style:italic}
-    .result-box.font-skanska{font-family:'Special Elite',cursive}
-    .result-box.font-norrlandska{font-family:'EB Garamond',serif;letter-spacing:.02em}
-    .result-box.font-smalandska{font-family:'Patrick Hand',cursive}
-    .result-box.font-dalmal{font-family:'Lobster',cursive}
-    .result-box.font-varmlandska{font-family:'Permanent Marker',cursive}
-    .result-box.font-cringe{font-family:'Press Start 2P',monospace;font-size:.75rem;line-height:1.9}
-    .result-actions{display:flex;gap:.7rem;flex-wrap:wrap}
-    .btn-secondary{background:transparent;border:1px solid var(--parchment-dark);color:var(--ink-muted);padding:.5rem 1.2rem;font-family:'Lato',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border-radius:2px}
-    .btn-secondary:hover{border-color:var(--gold-light);color:var(--ink)}
-    .error-msg{display:none;color:var(--red-seal-light);font-size:.85rem;margin-top:.8rem;font-style:italic}
-    .error-msg.visible{display:block}
-    .donate-section{margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--parchment-mid);text-align:center}
-    .donate-text{font-size:.85rem;color:var(--ink-muted);font-style:italic;margin-bottom:.8rem}
-    .btn-donate{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none;padding:.65rem 1.8rem;font-family:'Lato',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-decoration:none;display:inline-block}
-    .btn-donate:hover{opacity:.9}
-    footer{margin-top:3rem;text-align:center;font-size:.78rem;color:var(--ink-muted);font-style:italic}
-    footer a{color:var(--ink-muted)}
-    footer a:hover{color:var(--gold)}
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="logo-badge">Æ</div>div>
-      <h1>Akademifiera</h1>
-    <p class="tagline">Konsten att förolämpa med värdighet</p>p>
-    <div class="divider">✶</div>div>
-    </header>
-  <main class="card">
-  <div class="dialect-section">
-  <label for="dialect-select">Välj dialekt</label>label>
-  <div class="select-wrap">
-  <select id="dialect-select">
-  <option value="akademiska">🎓 Akademiska</option>option>
-  <option value="skanska">🌾 Skånska råpåsen</option>option>
-  <option value="norrlandska">🌲 Norrländska</option>option>
-  <option value="smalandska">💰 Småländska</option>option>
-  <option value="dalmal">🏔️ Dalmål</option>option>
-  <option value="varmlandska">🎵 Värmländska</option>option>
-  <option value="cringe">💀 Cringe meme</option>option>
-  </select>select>
-  </div>div>
-  <div class="dialect-info" id="dialect-info">Förvandlar förolämpningen till formellt akademiskt språk.</div>div>
-  </div>div>
-  <fieldset>
-    <legend>Din förolämpning</legend>
-  <textarea id="input" placeholder="Skriv din råa, oblygsamma formulering här..." rows="5"></textarea>
-  </fieldset>
-  <div class="form-footer">
-  <span class="hint">Ctrl+Enter för att skicka</span>span>
-  <button class="btn-primary" id="btn-submit">Akademifiera</button>button>
-  </div>div>
-  <div class="loader" id="loader">
-  <span>Konsulterar akademisk expertis</span>
-  <span class="loader-dots"><span></span><span></span><span></span></span>
-  </div>div>
-  <p class="error-msg" id="error-msg"></p>p>
-  <section class="result-section" id="result-section" aria-live="polite">
-  <div class="result-label">Akademisk version</div>div>
-  <div class="result-box font-akademiska" id="result-box"></div>div>
-  <div class="result-actions">
-  <button class="btn-secondary" id="btn-copy">Kopiera text</button>button>
-  <button class="btn-secondary" id="btn-reset">Ny förolämpning</button>button>
-  </div>div>
-  </section>section>
-  <div class="donate-section">
-  <p class="donate-text">Gillar du Akademifiera? Det är gratis — men en liten slant värms alltid om hjärtat.</p>p>
-  <a class="btn-donate" href="https://ko-fi.com/bjarki" target="_blank" rel="noopener">☕ Donera en kaffe</a>a>
-  </div>div>
-  </main>main>
-  <footer>
-    <p>Akademifiera &mdash; <a href="https://bjarki.se">bjarki.se</a>a></p>
-  </footer>
-  <script>
-    const dialectInfo = {
-        akademiska: 'Förvandlar förolämpningen till formellt akademiskt språk.',
-        skanska: 'Råbarkad, rättframm skånska — som en sur Bjäre-bonde.',
-        norrlandska: 'Lugn, lakonisk och torr som Norrlandsvinter.',
-        smalandska: 'Sparsam, gnidigt och ekonomisk som en äkta smålänning.',
-        dalmal: 'Ålderdomligt, melodiskt dalmål från Dalarna.',
-        varmlandska: 'Sjungande och varm värmländska.',
-        cringe: 'Maximalt cringe internet-meme-språk. No cap. 💀'
-    };
-
-    const select = document.getElementById('dialect-select');
-    const info = document.getElementById('dialect-info');
-    const input = document.getElementById('input');
-    const btnSubmit = document.getElementById('btn-submit');
-    const loader = document.getElementById('loader');
-    const errorMsg = document.getElementById('error-msg');
-    const resultSection = document.getElementById('result-section');
-    const resultBox = document.getElementById('result-box');
-    const btnCopy = document.getElementById('btn-copy');
-    const btnReset = document.getElementById('btn-reset');
-
-    select.addEventListener('change', () => {
-        info.textContent = dialectInfo[select.value] || '';
-        resultBox.className = 'result-box font-' + select.value;
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Akademifiera — Konsten att förolämpa med värdighet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&family=Patrick+Hand&family=Special+Elite&family=Lobster&family=Press+Start+2P&family=Permanent+Marker&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1a1410;--ink-muted:#5a4f45;--parchment:#f7f2e8;--parchment-mid:#ede6d2;--parchment-dark:#d9cfbb;--gold:#8b6914;--gold-light:#c9a43e;--red-seal-light:#c0392b;--shadow:rgba(90,70,40,.18)}
+body{font-family:'EB Garamond',Georgia,serif;background-color:var(--parchment);background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(139,105,20,.06) 31px,rgba(139,105,20,.06) 32px);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:3rem 1rem 4rem}
+header{text-align:center;margin-bottom:2.5rem}
+.logo-badge{width:64px;height:64px;border:2px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;color:var(--gold);font-family:'Playfair Display',serif;font-size:1.6rem;font-style:italic}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,3rem);font-weight:700;color:var(--ink)}
+.tagline{font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--ink-muted);margin-top:.4rem}
+.divider{display:flex;align-items:center;gap:.7rem;margin:1.2rem auto 0;width:200px;color:var(--gold)}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gold-light)}
+.card{background:#fff;border:1px solid var(--parchment-dark);box-shadow:0 4px 24px var(--shadow),0 1px 4px var(--shadow);border-radius:2px;padding:2rem;width:100%;max-width:680px;position:relative}
+.card::before{content:'\2736';position:absolute;color:var(--gold);font-size:.75rem;top:.7rem;left:.9rem}
+.card::after{content:'\2736';position:absolute;color:var(--gold);font-size:.75rem;bottom:.7rem;right:.9rem}
+.dialect-section{margin-bottom:1.5rem}
+.dialect-section label{display:block;font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.6rem}
+.select-wrap{position:relative}
+.select-wrap::after{content:'\25be';position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gold);pointer-events:none}
+select{width:100%;padding:.75rem 2.5rem .75rem 1rem;border:1px solid var(--parchment-dark);border-radius:2px;background:var(--parchment);color:var(--ink);font-size:1rem;font-family:'EB Garamond',serif;cursor:pointer;appearance:none;-webkit-appearance:none}
+select:focus{outline:none;border-color:var(--gold-light);box-shadow:0 0 0 3px rgba(139,105,20,.1)}
+.dialect-info{margin-top:.5rem;font-size:.82rem;color:var(--ink-muted);font-style:italic;min-height:1.2em}
+fieldset{border:none;margin-bottom:1.2rem}
+legend{font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.6rem;padding:0}
+textarea{width:100%;min-height:130px;padding:.9rem 1rem;border:1px solid var(--parchment-dark);border-radius:2px;resize:vertical;font-size:1.05rem;font-family:'EB Garamond',serif;color:var(--ink);background:var(--parchment);line-height:1.6}
+textarea:focus{outline:none;border-color:var(--gold-light);box-shadow:0 0 0 3px rgba(139,105,20,.1)}
+.form-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;margin-top:1rem}
+.hint{font-size:.78rem;color:#b0a898;font-style:italic}
+.btn-primary{background:var(--ink);color:var(--parchment);border:none;padding:.75rem 2rem;font-family:'Lato',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.btn-primary:hover{background:var(--ink-muted)}
+.btn-primary:disabled{background:var(--parchment-dark);color:var(--ink-muted);cursor:not-allowed}
+.loader{display:none;align-items:center;gap:.5rem;font-size:.85rem;color:var(--ink-muted);font-style:italic;margin-top:1rem}
+.loader.visible{display:flex}
+.loader-dots span{display:inline-block;width:5px;height:5px;background:var(--gold-light);border-radius:50%;margin:0 2px;animation:pulse 1.2s ease-in-out infinite}
+.loader-dots span:nth-child(2){animation-delay:.2s}
+.loader-dots span:nth-child(3){animation-delay:.4s}
+@keyframes pulse{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.result-section{display:none;border-top:1px solid var(--parchment-mid);padding-top:1.4rem;margin-top:1.4rem}
+.result-section.visible{display:block}
+.result-label{font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.7rem}
+.result-box{background:var(--parchment);border:1px solid var(--parchment-dark);border-left:3px solid var(--gold-light);padding:1.1rem 1.2rem;border-radius:2px;font-size:1.1rem;line-height:1.75;color:var(--ink);margin-bottom:1rem}
+.result-box.font-akademiska{font-family:'Playfair Display',serif;font-style:italic}
+.result-box.font-skanska{font-family:'Special Elite',cursive}
+.result-box.font-norrlandska{font-family:'EB Garamond',serif;letter-spacing:.02em}
+.result-box.font-smalandska{font-family:'Patrick Hand',cursive}
+.result-box.font-dalmal{font-family:'Lobster',cursive}
+.result-box.font-varmlandska{font-family:'Permanent Marker',cursive}
+.result-box.font-cringe{font-family:'Press Start 2P',monospace;font-size:.75rem;line-height:1.9}
+.result-actions{display:flex;gap:.7rem;flex-wrap:wrap}
+.btn-secondary{background:transparent;border:1px solid var(--parchment-dark);color:var(--ink-muted);padding:.5rem 1.2rem;font-family:'Lato',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.btn-secondary:hover{border-color:var(--gold-light);color:var(--ink)}
+.error-msg{display:none;color:var(--red-seal-light);font-size:.85rem;margin-top:.8rem;font-style:italic}
+.error-msg.visible{display:block}
+.donate-section{margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--parchment-mid);text-align:center}
+.donate-text{font-size:.85rem;color:var(--ink-muted);font-style:italic;margin-bottom:.8rem}
+.btn-donate{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none;padding:.65rem 1.8rem;font-family:'Lato',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-decoration:none;display:inline-block}
+.btn-donate:hover{opacity:.9}
+footer{margin-top:3rem;text-align:center;font-size:.78rem;color:var(--ink-muted);font-style:italic}
+footer a{color:var(--ink-muted)}
+footer a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+<header>
+<div class="logo-badge">Æ</div>
+<h1>Akademifiera</h1>
+<p class="tagline">Konsten att förolämpa med värdighet</p>
+<div class="divider">✶</div>
+</header>
+<main class="card">
+<div class="dialect-section">
+<label for="dialect-select">Välj dialekt</label>
+<div class="select-wrap">
+<select id="dialect-select">
+<option value="akademiska">🎓 Akademiska</option>
+<option value="skanska">🌾 Skånska råpåsen</option>
+<option value="norrlandska">🌲 Norrländska</option>
+<option value="smalandska">💰 Småländska</option>
+<option value="dalmal">🏔️ Dalmål</option>
+<option value="varmlandska">🎵 Värmländska</option>
+<option value="cringe">💀 Cringe meme</option>
+</select>
+</div>
+<div class="dialect-info" id="dialect-info">Förvandlar förolämpningen till formellt akademiskt språk.</div>
+</div>
+<fieldset>
+<legend>Din förolämpning</legend>
+<textarea id="input" placeholder="Skriv din råa, oblygsamma formulering här..." rows="5"></textarea>
+</fieldset>
+<div class="form-footer">
+<span class="hint">Ctrl+Enter för att skicka</span>
+<button class="btn-primary" id="btn-submit">Akademifiera</button>
+</div>
+<div class="loader" id="loader">
+<span>Konsulterar akademisk expertis</span>
+<span class="loader-dots"><span></span><span></span><span></span></span>
+</div>
+<p class="error-msg" id="error-msg"></p>
+<section class="result-section" id="result-section" aria-live="polite">
+<div class="result-label">Akademisk version</div>
+<div class="result-box font-akademiska" id="result-box"></div>
+<div class="result-actions">
+<button class="btn-secondary" id="btn-copy">Kopiera text</button>
+<button class="btn-secondary" id="btn-reset">Ny förolämpning</button>
+</div>
+</section>
+<div class="donate-section">
+<p class="donate-text">Gillar du Akademifiera? Det är gratis — men en liten slant värms alltid om hjärtat.</p>
+<a class="btn-donate" href="https://ko-fi.com/bjarki" target="_blank" rel="noopener">☕ Donera en kaffe</a>
+</div>
+</main>
+<footer>
+<p>Akademifiera &mdash; <a href="https://bjarki.se">bjarki.se</a></p>
+</footer>
+<script>
+const dialectInfo = {
+  akademiska: 'Förvandlar förolämpningen till formellt akademiskt språk.',
+  skanska: 'Råbarkad, rättframm skånska — som en sur Bjäre-bonde.',
+  norrlandska: 'Lugn, lakonisk och torr som Norrlandsvinter.',
+  smalandska: 'Sparsam, gnidigt och ekonomisk som en äkta smålänning.',
+  dalmal: 'Ålderdomligt, melodiskt dalmål från Dalarna.',
+  varmlandska: 'Sjungande och varm värmländska.',
+  cringe: 'Maximalt cringe internet-meme-språk. No cap. 💀'
+};
+const select = document.getElementById('dialect-select');
+const info = document.getElementById('dialect-info');
+const input = document.getElementById('input');
+const btnSubmit = document.getElementById('btn-submit');
+const loader = document.getElementById('loader');
+const errorMsg = document.getElementById('error-msg');
+const resultSection = document.getElementById('result-section');
+const resultBox = document.getElementById('result-box');
+const btnCopy = document.getElementById('btn-copy');
+const btnReset = document.getElementById('btn-reset');
+select.addEventListener('change', () => {
+  info.textContent = dialectInfo[select.value] || '';
+  resultBox.className = 'result-box font-' + select.value;
+});
+async function submit() {
+  const text = input.value.trim();
+  if (!text) return;
+  btnSubmit.disabled = true;
+  loader.classList.add('visible');
+  errorMsg.classList.remove('visible');
+  resultSection.classList.remove('visible');
+  try {
+    const res = await fetch('/akademifiera/api/akademifiera', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, dialect: select.value })
     });
-
-    async function submit() {
-        const text = input.value.trim();
-        if (!text) return;
-
-        btnSubmit.disabled = true;
-        loader.classList.add('visible');
-        errorMsg.classList.remove('visible');
-        resultSection.classList.remove('visible');
-
-        try {
-              const res = await fetch('/akademifiera/api/akademifiera', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ text, dialect: select.value })
-              });
-              const data = await res.json();
-              if (!res.ok) throw new Error(data.error || 'Fel uppstod');
-              resultBox.className = 'result-box font-' + select.value;
-              resultBox.textContent = data.result;
-              resultSection.classList.add('visible');
-        } catch (err) {
-              errorMsg.textContent = err.message;
-              errorMsg.classList.add('visible');
-        } finally {
-              btnSubmit.disabled = false;
-              loader.classList.remove('visible');
-        }
-    }
-
-    btnSubmit.addEventListener('click', submit);
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submit();
-    });
-
-    btnCopy.addEventListener('click', () => {
-        navigator.clipboard.writeText(resultBox.textContent);
-        btnCopy.textContent = 'Kopierat!';
-        setTimeout(() => btnCopy.textContent = 'Kopiera text', 2000);
-    });
-
-    btnReset.addEventListener('click', () => {
-        input.value = '';
-        resultSection.classList.remove('visible');
-        errorMsg.classList.remove('visible');
-        input.focus();
-    });
-  </script>
-  </body>
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fel uppstod');
+    resultBox.className = 'result-box font-' + select.value;
+    resultBox.textContent = data.result;
+    resultSection.classList.add('visible');
+  } catch (err) {
+    errorMsg.textContent = err.message;
+    errorMsg.classList.add('visible');
+  } finally {
+    btnSubmit.disabled = false;
+    loader.classList.remove('visible');
+  }
+}
+btnSubmit.addEventListener('click', submit);
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submit();
+});
+btnCopy.addEventListener('click', () => {
+  navigator.clipboard.writeText(resultBox.textContent);
+  btnCopy.textContent = 'Kopierat!';
+  setTimeout(() => btnCopy.textContent = 'Kopiera text', 2000);
+});
+btnReset.addEventListener('click', () => {
+  input.value = '';
+  resultSection.classList.remove('visible');
+  errorMsg.classList.remove('visible');
+  input.focus();
+});
+</script>
+</body>
 </html>
