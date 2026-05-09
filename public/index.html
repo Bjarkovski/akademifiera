@@ -10,6 +10,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--ink:#1a1410;--ink-muted:#5a4f45;--parchment:#f7f2e8;--parchment-mid:#ede6d2;--parchment-dark:#d9cfbb;--gold:#8b6914;--gold-light:#c9a43e;--red-seal-light:#c0392b;--shadow:rgba(90,70,40,.18)}
+html,body{overflow:hidden}
 body{font-family:'EB Garamond',Georgia,serif;background-color:var(--parchment);background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(139,105,20,.06) 31px,rgba(139,105,20,.06) 32px);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:3rem 1rem 4rem}
 header{text-align:center;margin-bottom:2.5rem}
 .logo-badge{width:64px;height:64px;border:2px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;color:var(--gold);font-family:'Playfair Display',serif;font-size:1.6rem;font-style:italic}
@@ -113,7 +114,7 @@ footer a:hover{color:var(--gold)}
 </section>
 <div class="donate-section">
 <p class="donate-text">Gillar du Akademifiera? Det är gratis — men en liten slant värms alltid om hjärtat.</p>
-<a class="btn-donate" href="https://ko-fi.com/bjarki" target="_blank" rel="noopener">☕ Donera en kaffe</a>
+<a class="btn-donate" href="https://ko-fi.com/bjarkit" target="_blank" rel="noopener">☕ Donera en kaffe</a>
 </div>
 </main>
 <footer>
@@ -139,10 +140,17 @@ const resultSection = document.getElementById('result-section');
 const resultBox = document.getElementById('result-box');
 const btnCopy = document.getElementById('btn-copy');
 const btnReset = document.getElementById('btn-reset');
+
+function resizeParent() {
+  const height = document.body.scrollHeight;
+  window.parent.postMessage({ type: 'resize', height: height }, '*');
+}
+
 select.addEventListener('change', () => {
   info.textContent = dialectInfo[select.value] || '';
   resultBox.className = 'result-box font-' + select.value;
 });
+
 async function submit() {
   const text = input.value.trim();
   if (!text) return;
@@ -167,23 +175,30 @@ async function submit() {
   } finally {
     btnSubmit.disabled = false;
     loader.classList.remove('visible');
+    setTimeout(resizeParent, 100);
   }
 }
+
 btnSubmit.addEventListener('click', submit);
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submit();
 });
+
 btnCopy.addEventListener('click', () => {
   navigator.clipboard.writeText(resultBox.textContent);
   btnCopy.textContent = 'Kopierat!';
   setTimeout(() => btnCopy.textContent = 'Kopiera text', 2000);
 });
+
 btnReset.addEventListener('click', () => {
   input.value = '';
   resultSection.classList.remove('visible');
   errorMsg.classList.remove('visible');
   input.focus();
+  setTimeout(resizeParent, 100);
 });
+
+window.addEventListener('load', resizeParent);
 </script>
 </body>
 </html>
